@@ -38,7 +38,7 @@ $verifymsg = 'Click the link below to verify your new account at the Classcraft 
 $active_email = 'Your new bank account is active! Click this link to log in:';//Active email message
 //LOGIN FORM RESPONSE MESSAGES/ERRORS
 $signupthanks = 'Thank you for signing up! You will receive a confirmation email shortly.';
-$activemsg = '<b> Your account has been verified!</b> <br> You may now login at: <a href="'.$signin_url.'">'.$signin_url.'</a>';
+$activemsg = '<b>Your account has been verified!</b> <br> You may now login at: <a href="'.$signin_url.'">'.$signin_url.'</a>';
 
 //DO NOT TOUCH BELOW THIS LINE
 //Unsets $admin_email based on various conditions (left blank, not valid email, etc)
