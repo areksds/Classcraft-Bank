@@ -1,0 +1,12 @@
+<?php
+//PUT THIS HEADER ON TOP OF EACH UNIQUE PAGE
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("location:login/main_login.php");
+} 
+
+include "includes/functions.php";
+include "includes/dbconn.php";
+include "dbconf.php";
+$balance = checkBalance($_SESSION['username']);  
+$userInfo = userInfo($_SESSION['username']);
