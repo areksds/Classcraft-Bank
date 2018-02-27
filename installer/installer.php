@@ -31,102 +31,25 @@
 				<?php if(isset($_POST['submit'])) {  
 					if (($_POST['user'] != '') && ($_POST['host'] != '') && ($_POST['password'] != '') && ($_POST['database'] != '')) {
 						
-						// $sql = file_get_contents('installer.sql');
-					$sql = "SET SQL_MODE = \"NO_AUTO_VALUE_ON_ZERO\";
-							SET time_zone = \"+00:00\";
-
-							CREATE TABLE activeLoans (
-							  username varchar(65) NOT NULL,
-							  amount int(65) NOT NULL,
-							  date date NOT NULL,
-							  interest int(65) NOT NULL,
-							  emailed int(1) NOT NULL DEFAULT '0'
-							) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-							INSERT INTO activeLoans (username, amount, date, interest, emailed) VALUES
-							('bank', 0, '9999-12-31', 0, 1);
-
-							CREATE TABLE balance (
-							  username varchar(65) NOT NULL,
-							  userBalance int(65) NOT NULL,
-							  userLoans int(65) NOT NULL,
-							  pendingIn int(65) NOT NULL DEFAULT '0',
-							  pendingOut int(65) NOT NULL DEFAULT '0'
-							) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-							INSERT INTO balance (username, userBalance, userLoans, pendingIn, pendingOut) VALUES
-							('bank', 0, 0, 0, 0);
-
-							CREATE TABLE loginAttempts (
-							  IP varchar(20) NOT NULL,
-							  Attempts int(11) NOT NULL,
-							  LastLogin datetime NOT NULL,
-							  Username varchar(65) DEFAULT NULL,
-							  ID int(11) NOT NULL
-							) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-							CREATE TABLE members (
-							  id char(23) NOT NULL,
-							  username varchar(65) NOT NULL DEFAULT '',
-							  password varchar(65) NOT NULL DEFAULT '',
-							  email varchar(65) NOT NULL,
-							  verified tinyint(1) NOT NULL DEFAULT '0',
-							  mod_timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-							  isAdmin int(1) NOT NULL DEFAULT '0',
-							  isBanned int(1) NOT NULL DEFAULT '0'
-							) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-							CREATE TABLE userLog (
-							  id int(10) NOT NULL,
-							  action varchar(65) CHARACTER SET utf8 NOT NULL,
-							  username varchar(65) CHARACTER SET utf8 NOT NULL,
-							  date datetime NOT NULL,
-							  notes text CHARACTER SET utf8 NOT NULL
-							) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-							ALTER TABLE activeLoans
-							  ADD PRIMARY KEY (username);
-
-							ALTER TABLE balance
-							  ADD PRIMARY KEY (username);
-
-							ALTER TABLE loginAttempts
-							  ADD PRIMARY KEY (ID);
-
-							ALTER TABLE members
-							  ADD PRIMARY KEY (id),
-							  ADD UNIQUE KEY username_UNIQUE (username),
-							  ADD UNIQUE KEY id_UNIQUE (id),
-							  ADD UNIQUE KEY email_UNIQUE (email);
-
-							ALTER TABLE userLog
-							  ADD PRIMARY KEY (id);
-
-							ALTER TABLE loginAttempts
-							  MODIFY ID int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
-
-							ALTER TABLE userLog
-							  MODIFY id int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=634;";
+						$sql = file_get_contents('installer.sql');
 						$connect = mysqli_connect($_POST['host'], $_POST['user'], $_POST['password']);
 						$connect2 = mysqli_select_db($connect, $_POST['database']);
-						$result = mysqli_query($connect, $sql);
+						$result = mysqli_multi_query($connect, $sql);
 
 				if ($connect == false || $connect2 == false || $sql == false || $result == false) {  ?>
-					<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Unable to connect to database. Please recheck all the information, and ensure the SQL file in the installer folder is accessible.</div>				
+					<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Unable to connect to database. Please recheck all the information, and ensure the site directory is writable.</div>				
 				<?php } else { 
-					$e = '';
+						$data = "<?php
+							//DATABASE CONNECTION VARIABLES
+							\$host = \"".$_POST['host']."\"; // Host name 
+							\$username = \"".$_POST['user']."\"; // Mysql username 
+							\$password = \"".$_POST['password']."\"; // Mysql password 
+							\$db_name = \"".$_POST['database']."\"; // Database name
 
-						$data = "<?php " + "/r/n" +
-							"//DATABASE CONNECTION VARIABLES " + "/r/n" +
-							"\$host = \"".$_POST['host']."\"; // Host name " + "/r/n" +
-							"\$username = \"".$_POST['user']."\"; // Mysql username " + "/r/n" +
-							"\$password = \"".$_POST['password']."\"; // Mysql password " + "/r/n" +
-							"\$db_name = \"".$_POST['database']."\"; // Database name " + "/r/n" +
-
-							"\$tbl_prefix = \"\";" + "/r/n" +
-							"\$tbl_members = \$tbl_prefix.\"members\";" + "/r/n" +
-							"\$tbl_attempts = \$tbl_prefix.\"loginAttempts\";" + "/r/n" +
-							"\$tbl_balance = \$tbl_prefix.\"balance\";" + "/r/n";
+							\$tbl_prefix = \"\";
+							\$tbl_members = \$tbl_prefix.\"members\";
+							\$tbl_attempts = \$tbl_prefix.\"loginAttempts\";
+							\$tbl_balance = \$tbl_prefix.\"balance\";";
 						$handleone = fopen('../login/dbconf.php', 'w');
 						fwrite($handleone, $data);
 						$handletwo = fopen('../login/includes/dbconf.php', 'w');
@@ -134,17 +57,117 @@
 						if ($handleone == false || $handletwo == false) { ?>
 					<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Couldn't write configuration file. Please make sure the directory is writable.</div>	
 					<?php } else { {?> 
-					<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Configuration written.</div>
+					<div id="reload" class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Configuration written.</div>
+					<script type="text/javascript"> location.reload(); </script>
 				<?php } } } } else { ?>
 					<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Please fill in all the fields.</div>	
 				<?php }  } ?>
 		</div>
-		<?php } else { ?>
-		<?php } ?>
+		<?php } elseif (file_exists('../login/config.php') == false || file_exists('../login/includes/config.php') == false) { ?>
+		<form name="installer-configuration" method="post" action="">
+			<h3>Email Configuration Settings</h3><br>
+			<label>Sender Email:</label>
+			<input id="email" name="email" type="email" class="form-control" placeholder="noreply@website.net"></input><br>
+			<label>Techer email:</label>
+			<input id="teacher" name="teacher" type="email" class="form-control" placeholder="teacher@school.com"></input><br>
+			<label>SMTP host:</label>
+			<input id="host" name="host" type="textarea" class="form-control" placeholder="localhost"></input><br>
+			<label>SMTP user:</label>
+			<input id="user" name="user" type="textarea" class="form-control" placeholder="root"></input><br>
+			<label>SMTP password:</label>
+			<input id="password" name="password" type="password" class="form-control" placeholder="password"></input><br>
+			<label>SMTP security:</label>
+			<select id="security" name="security" class="form-control">
+				<option value="">None</option>
+				<option value="tls">TLS</option>
+				<option value="ssl">SSL</option>
+			</select><br>
+			<label>SMTP port:</label>
+			<input id="port" name="port" type="number" class="form-control" placeholder="25, 456, 587"></input><br>
+			<button type="submit" id="submit" name="submit" class="btn btn-primary">Save configuration</button>
+		</form> <br>
+		<?php if(isset($_POST['submit'])) { 
+			if (($_POST['user'] != '') && ($_POST['email'] != '') && ($_POST['teacher'] != '') && ($_POST['password'] != '') && ($_POST['host'] != '') && ($_POST['port'] != '') && ($_POST['password'] != '')) { 
+				$data = "<?php
+					//Pull '\$base_url' and '\$signin_url' from this file
+					include 'globalcon.php';
+					//Pull database configuration from this file
+					include 'dbconf.php';
+
+					//Set this for global site use
+					\$site_name = 'Classcraft Bank';
+
+					//Email of teacher for all requests
+					\$teacher_email = '".$_POST['teacher']."';
+
+					//Maximum Login Attempts
+					\$max_attempts = 5;
+					//Timeout (in seconds) after max attempts are reached
+					\$login_timeout = 300;
+
+					//ONLY set this if you want a moderator to verify users and not the users themselves, otherwise leave blank or comment out
+					\$admin_email = '".$_POST['email']."';
+					\$bankusername = 'bank';
+
+					//EMAIL SETTINGS
+					//SEND TEST EMAILS THROUGH FORM TO https://www.mail-tester.com GENERATED ADDRESS FOR SPAM SCORE
+					\$from_email = '".$_POST['email']."'; //Webmaster email
+					\$from_name = 'Classcraft Bank'; //\"From name\" displayed on email
+
+					//Find specific server settings at https://www.arclab.com/en/kb/email/list-of-smtp-and-pop3-servers-mailserver-list.html
+					\$mailServerType = 'smtp';
+					\$smtp_server = '".$_POST['host']."';
+					\$smtp_user = '".$_POST['user']."';
+					\$smtp_pw = '".$_POST['password']."';
+					\$smtp_port = ".$_POST['port']."; //465 for ssl, 587 for tls, 25 for other
+					\$smtp_security = '".$_POST['security']."';//ssl, tls or ''
+
+					//HTML Messages shown before URL in emails (the more
+					\$verifymsg = 'Click the link below to verify your new account at the Classcraft Bank:'; //Verify email message
+					\$active_email = 'Your new bank account is active! Click this link to log in:';//Active email message
+					//LOGIN FORM RESPONSE MESSAGES/ERRORS
+					\$signupthanks = 'Thank you for signing up! You will receive a confirmation email shortly.';
+					\$activemsg = '<b> Your account has been verified!</b> <br> Please log in at the Classcraft Bank homepage.</a>';
+
+					//DO NOT TOUCH BELOW THIS LINE
+					//Unsets \$admin_email based on various conditions (left blank, not valid email, etc)
+					if (trim(\$admin_email, ' ') == '') {
+						unset(\$admin_email);
+					} elseif (!filter_var(\$admin_email, FILTER_VALIDATE_EMAIL) == true) {
+						unset(\$admin_email);
+						echo \$invalid_mod;
+					};
+					\$invalid_mod = '\$adminemail is not a valid email address';
+
+					//Makes readable version of timeout (in minutes). Do not change.
+					\$timeout_minutes = round((\$login_timeout / 60), 1);";
+				
+					$handleone = fopen('../login/config.php', 'w');
+					fwrite($handleone, $data);
+					$handletwo = fopen('../login/includes/config.php', 'w');
+					fwrite($handletwo, $data);
+				
+					if ($handleone == false || $handletwo == false) { ?>
+					
+						<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Couldn't write configuration file. Please make sure the directory is writable.</div>
+					
+			<?php } else { ?> 
+
+					<div id="reload" class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Configuration written.</div>
+					<script type="text/javascript"> location.reload(); </script>
+			
+			<?php } } else { ?>
+				<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Please fill in all the fields.</div>		
+			<?php } } } else { ?>	
+				<h3 align="center">Installation complete</h3><br>
+				<p align="center">Head over to the homepage and register an account to begin. Please remember to set <b>isAdmin</b> to <b>1</b> on administrator accounts in the database.</p><br>
+				<div style="text-align: center;"><a href="../index.php" class="btn btn-primary">Homepage</a></div>
+			<?php } ?>
 	</div>
 	 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="../login/js/jquery-2.2.4.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script type="text/javascript" src="../login/js/bootstrap.js"></script>
+	
 </body>
 </html>
