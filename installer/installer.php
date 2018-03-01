@@ -25,7 +25,7 @@
 				<input id="user" name="user" type="textarea" class="form-control" placeholder="root"></input><br>
 				<label>Password:</label>
 				<input id="password" name="password" type="password" class="form-control" placeholder="password"></input><br>
-				<button type="submit" id="submit" name="submit" class="btn btn-primary">Test connection</button>
+				<button type="submit" id="submit" name="submit" class="btn btn-primary">Install database</button>
 			</form>
 				<br>
 				<?php if(isset($_POST['submit'])) {  
@@ -106,7 +106,7 @@
 					\$login_timeout = 300;
 
 					//ONLY set this if you want a moderator to verify users and not the users themselves, otherwise leave blank or comment out
-					\$admin_email = '".$_POST['email']."';
+					\$admin_email = '';
 					\$bankusername = 'bank';
 
 					//EMAIL SETTINGS

@@ -1,6 +1,8 @@
 <?php
 
-require 'config.php';
+include 'config.php';
+
+$teacher_email = $teacher_email;
 
 //Class Autoloader
 spl_autoload_register(function ($className) {
