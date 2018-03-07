@@ -1,9 +1,5 @@
 <?php
 
-include 'config.php';
-
-$teacher_email = $teacher_email;
-
 //Class Autoloader
 spl_autoload_register(function ($className) {
 
@@ -214,6 +210,8 @@ function sendMoney($username, $email, $amount)
 
 function withdrawrequest($username, $amount){
         try {
+			
+			require 'config.php';
             $balance = checkBalance($username);
             $type = gettype($amount);
 
@@ -254,6 +252,8 @@ function withdrawrequest($username, $amount){
 
 function depositrequest($username, $amount){
         try {
+			
+			require 'config.php';
             $balance = checkBalance($username);
             $type = gettype($amount);
 
@@ -295,7 +295,8 @@ function depositrequest($username, $amount){
 function loanRequest($username, $amount, $reason){
 
     try {
-
+	
+	require 'config.php';
      $balance = checkBalance($username);
      $bank = checkBalance("bank");
             if ($amount < 1) {
