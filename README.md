@@ -20,7 +20,7 @@ Beyond the initial installer, you will need to set up the cron job of your loan.
 
 Finally, be sure to set yourself as an administrator to gain access to the admin panel:
 ```sql
-UPDATE `members` SET `isAdmin`= 1 WHERE username="YOURUSERNAME"
+UPDATE `members` SET `isAdmin`= 1 WHERE username="YOURUSERNAME";
 ```
 
 That's basically it for installation. On to the features.
