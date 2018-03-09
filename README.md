@@ -31,7 +31,7 @@ That's basically it for installation. On to the features.
 * Loans (up to 500 GP and 2-weeks to pay back).
 * Sending GP to friends.
 * Administrator panel for users with `isAdmin` set to `1`.
-* User balance manipulation and banning available through admin panel, as well as total bank balance and active loans.
+ * User balance manipulation and banning available through admin panel, as well as total bank balance and active loans.
 * Emails sent for all actions, with reasons for transaction rejections (managed through [PHPMailer](https://github.com/PHPMailer/PHPMailer)).
 * User log for all transactions.
 * Interest distribution system.
