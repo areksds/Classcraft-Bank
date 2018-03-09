@@ -32,7 +32,7 @@ That's basically it for installation. On to the features.
 * Sending GP to friends.
 * Administrator panel for users with `isAdmin` set to `1`.
 * User balance manipulation and banning available through admin panel, as well as total bank balance and active loans.
-* Emails sent for all actions, with reasons for transaction rejections (managed through [PHPMailer](https://github.com/PHPMailer/PHPMailer).
+* Emails sent for all actions, with reasons for transaction rejections (managed through [PHPMailer](https://github.com/PHPMailer/PHPMailer)).
 * User log for all transactions.
 * Interest distribution system.
   * All interest accumulated can be distributed through the admin panel dropdown. The interest per user is calculated by creating a fraction representing the user's balance as compared to the overall bank balance.
