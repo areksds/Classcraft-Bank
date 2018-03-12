@@ -5,7 +5,7 @@ class MailSender
     {
         require_once 'scripts/PHPMailer/PHPMailerAutoload.php';
         include 'config.php';
-
+		
         $finishedtext = $active_email;
 
         // ADD $_SERVER['SERVER_PORT'] TO $verifyurl STRING AFTER $_SERVER['SERVER_NAME'] FOR DEV URLS USING PORTS OTHER THAN 80
@@ -13,12 +13,12 @@ class MailSender
         // Can pass 1 (verified) or 0 (unverified/blocked) into url for "v" parameter
         $verifyurl = substr($base_url . $_SERVER['PHP_SELF'], 0, -strlen(basename($_SERVER['PHP_SELF']))) . "verifyuser.php?v=1&uid=" . $id;
 
-        $withdrawapproveurl = substr($base_url . $_SERVER['PHP_SELF'], 0, -strlen(basename($_SERVER['PHP_SELF']))) . "includes/withdraw.php?code=OSKKMk1GgccTRC4DUjfR&status=1&amount=" . $id . "&username=" . $user;
-        $withdrawrejecturl = substr($base_url . $_SERVER['PHP_SELF'], 0, -strlen(basename($_SERVER['PHP_SELF']))) . "includes/withdraw.php?code=OSKKMk1GgccTRC4DUjfR&status=0&amount=" . $id . "&username=" . $user;
-        $depositapproveurl = substr($base_url . $_SERVER['PHP_SELF'], 0, -strlen(basename($_SERVER['PHP_SELF']))) . "includes/deposit.php?code=OSKKMk1GgccTRC4DUjfR&status=1&amount=" . $id . "&username=" . $user;
-        $depositrejecturl = substr($base_url . $_SERVER['PHP_SELF'], 0, -strlen(basename($_SERVER['PHP_SELF']))) . "includes/deposit.php?code=OSKKMk1GgccTRC4DUjfR&status=0&amount=" . $id . "&username=" . $user;
-        $loanapproveurl = substr($base_url . $_SERVER['PHP_SELF'], 0, -strlen(basename($_SERVER['PHP_SELF']))) . "includes/loans.php?code=OSKKMk1GgccTRC4DUjfR&status=1&amount=" . $id . "&username=" . $user;
-        $loanrejecturl = substr($base_url . $_SERVER['PHP_SELF'], 0, -strlen(basename($_SERVER['PHP_SELF']))) . "includes/loans.php?code=OSKKMk1GgccTRC4DUjfR&status=0&amount=" . $id . "&username=" . $user;
+        $withdrawapproveurl = substr($base_url . $_SERVER['PHP_SELF'], 0, -strlen(basename($_SERVER['PHP_SELF']))) . "includes/withdraw.php?code=" . $code . "&status=1&amount=" . $id . "&username=" . $user;
+        $withdrawrejecturl = substr($base_url . $_SERVER['PHP_SELF'], 0, -strlen(basename($_SERVER['PHP_SELF']))) . "includes/withdraw.php?code=" . $code . "&status=0&amount=" . $id . "&username=" . $user;
+        $depositapproveurl = substr($base_url . $_SERVER['PHP_SELF'], 0, -strlen(basename($_SERVER['PHP_SELF']))) . "includes/deposit.php?code=" . $code . "&status=1&amount=" . $id . "&username=" . $user;
+        $depositrejecturl = substr($base_url . $_SERVER['PHP_SELF'], 0, -strlen(basename($_SERVER['PHP_SELF']))) . "includes/deposit.php?code=" . $code . "&status=0&amount=" . $id . "&username=" . $user;
+        $loanapproveurl = substr($base_url . $_SERVER['PHP_SELF'], 0, -strlen(basename($_SERVER['PHP_SELF']))) . "includes/loans.php?code=" . $code . "&status=1&amount=" . $id . "&username=" . $user;
+        $loanrejecturl = substr($base_url . $_SERVER['PHP_SELF'], 0, -strlen(basename($_SERVER['PHP_SELF']))) . "includes/loans.php?code=" . $code . "&status=0&amount=" . $id . "&username=" . $user;
 
         // Create a new PHPMailer object
         // ADD sendmail_path = "env -i /usr/sbin/sendmail -t -i" to php.ini on UNIX servers

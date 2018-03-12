@@ -88,6 +88,13 @@
 		</form> <br>
 		<?php if(isset($_POST['submit'])) { 
 			if (($_POST['user'] != '') && ($_POST['email'] != '') && ($_POST['teacher'] != '') && ($_POST['password'] != '') && ($_POST['host'] != '') && ($_POST['port'] != '') && ($_POST['password'] != '')) { 
+				$length = 10;
+				$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+				$charactersLength = strlen($characters);
+				$code = '';
+				for ($i = 0; $i < $length; $i++) {
+					$code .= $characters[rand(0, $charactersLength - 1)];
+				}
 				$data = "<?php
 					//Pull '\$base_url' and '\$signin_url' from this file
 					include 'globalcon.php';
@@ -97,8 +104,9 @@
 					//Set this for global site use
 					\$site_name = 'Classcraft Bank';
 
-					//Email of teacher for all requests
+					//Email of teacher and code for all requests
 					\$teacher_email = '".$_POST['teacher']."';
+					\$code = '".$code."';
 
 					//Maximum Login Attempts
 					\$max_attempts = 5;

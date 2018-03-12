@@ -14,7 +14,7 @@ require 'mailsender.php';
 include '../config.php';
 
 //Pulls variables from url. 
-
+$verification = $code;
 $code = $_GET['code'];
 $status = $_GET['status'];
 $amount = $_GET['amount'];
@@ -26,7 +26,7 @@ $clearPending = 0;
 $finalamount = $balance['userBalance'] + $amount;
 $bankamount = $bank['userBalance'] + $amount;
 
-if ($code != "OSKKMk1GgccTRC4DUjfR") {
+if ($code != $verification) {
     echo 'Request authentication error. Please contact an administrator for more information.';
 } elseif ($balance['pendingIn'] <= 0) {
     echo 'Request invalid.';
