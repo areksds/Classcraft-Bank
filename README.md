@@ -41,4 +41,5 @@ That's basically it for installation. On to the features.
   * All interest accumulated can be distributed through the admin panel dropdown. The interest per user is calculated by creating a fraction representing the user's balance as compared to the overall bank balance.
 
 Any and all questions can be directed through an issue on the repository.
-`Disclaimer: this script is neither affiliated with nor endorsed by Classcraft Studios Inc.`
+
+*Disclaimer: this script is neither affiliated with nor endorsed by Classcraft Studios Inc.*
