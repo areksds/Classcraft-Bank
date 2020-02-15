@@ -6,7 +6,7 @@ The Classcraft Bank requires the following to operate:
 * MySQL database
 * SMTP host (for site-wide emails)
 * Access to your server's cron jobs (setting up the loan cron)
-* Writable directory (for configuration files and installationn)
+* Writable directory (for configuration files and installation)
 
 As the bank has a built-in installer script, simply download the latest release or clone the repository and upload to your server. The script consists of two parts:
 * Database configuration writer and installer
